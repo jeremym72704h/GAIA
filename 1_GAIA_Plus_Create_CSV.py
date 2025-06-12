@@ -46,9 +46,9 @@ def decode_2d(b64):
 
 
 # Output files
-output_dir = r"C:/Users/luser/OneDrive/Python_script/GH_GAIA/"
-endless_sky_csv = r"C:/Users/luser/OneDrive/Python_script/GH_GAIA/GAIA_Plus.csv"
-endless_sky_no_simbad_csv = r"C:/Users/luser/OneDrive/Python_script/GH_GAIA/GAIA_Plus_Simbad.csv"
+output_dir = r"C:/Users/luser/OneDrive/Python_script/GAIA/"
+endless_sky_csv = r"C:/Users/luser/OneDrive/Python_script/GAIA/GAIA_Plus.csv"
+endless_sky_no_simbad_csv = r"C:/Users/luser/OneDrive/Python_script/GAIA/GAIA_Plus_Simbad.csv"
 append_mode = False
 
 # Star classification table

@@ -6,6 +6,20 @@ from typing import Dict , List , Tuple
 import numpy as np
 import logging
 import os
+import logging
+
+# Set up logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('GAIA_Plus_Thin_Map.log'),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger(__name__)
+i = 0
 
 system_name_counter = {}  # Place at module level, outside function
 
@@ -474,7 +488,7 @@ def generate_system(row: pd.Series) -> str:
 def main():
     """Generate systems from CSV."""
     logging.info("Starting script execution")
-    csv_path = r"C:/Users/luser/OneDrive/Python_script/GH_GAIA/GAIA_Plus.csv"
+    csv_path = r"C:/Users/luser/OneDrive/Python_script/GAIA/GAIA_Plus.csv"
     logging.info(f"Attempting to read CSV: {os.path.abspath(csv_path)}")
 
     try:
@@ -505,7 +519,7 @@ def main():
 
     logging.info(f"Generated {len(systems)} systems")
 
-    output_file = 'map_systems_new.txt'
+    output_file = r'C:\Apps\Scripted\GAIA\GAIA_Plus_map_systems_new.txt'
     try:
         with open(output_file , 'w' , encoding='utf-8') as f:
             f.write('\n\n'.join(systems))

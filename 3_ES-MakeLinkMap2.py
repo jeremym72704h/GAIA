@@ -23,6 +23,10 @@ logging.basicConfig(
     ]
 )
 
+logger = logging.getLogger(__name__)
+i = 0
+
+
 def decode_2d(b64: str) -> tuple[int, int]:
     b64 += '=' * ((4 - len(b64) % 4) % 4)
     val = int.from_bytes(base64.b64decode(b64), byteorder='big')
@@ -42,6 +46,7 @@ def create_gravity_well_map(input_path: str, output_path: str) -> None:
         logging.error(f"Error reading CSV: {e}")
         return
 
+    logger.info(f"CSV imported to Dataframe")
     # Decode base64_2D grid coordinates into integers
     df[['grid_x', 'grid_y']] = df['base64_2D'].apply(
         lambda b: pd.Series(decode_2d(b))
@@ -122,6 +127,8 @@ def create_gravity_well_map(input_path: str, output_path: str) -> None:
             G.add_edge(b1, nearest, weight=min_dist)
 
     # Output linkages to CSV
+    if i % 100 == 0:
+        logger.info(f"Processed {i} cubes")
     edges = [(u, v, d['weight']) for u, v, d in G.edges(data=True)]
     if edges:
         # Build initial edge list
@@ -157,8 +164,8 @@ def create_gravity_well_map(input_path: str, output_path: str) -> None:
     logging.info(f"Saved gravity well map to {image_output_path}")
 
 def main():
-    input_path = r"C:/Users/luser/OneDrive/Python_script/GH_GAIA/GAIA_Plus_Thined.csv"
-    output_path = r"C:/Users/luser/OneDrive/Python_script/GH_GAIA/GAIA_Plus_Thin_Map.png"
+    input_path = r"C:/Users/luser/OneDrive/Python_script/GAIA/GAIA_Plus_Thined.csv"
+    output_path = r"C:/Users/luser/OneDrive/Python_script/GAIA/GAIA_Plus_Thin_Map.png"
     logging.info(f"Starting gravity well map generation at {input_path} to {output_path}")
     create_gravity_well_map(input_path, output_path)
 

@@ -14,6 +14,10 @@ logging.basicConfig(
     ]
 )
 
+logger = logging.getLogger(__name__)
+i = 0
+
+
 # === You must define this ===
 PARSEC_TO_LY = 3.26156
 
@@ -45,7 +49,7 @@ def get_neighbor_keys(base64_key: str) -> list[str]:
 
 # === Load Data ===
 df = pd.read_csv("GAIA_Plus.csv")
-
+logger.info(f"CSV imported to Dataframe")
 # === Compute base64_2D if not already present ===
 df['flat_x'] = df['x_Coord']
 df['flat_y'] = df['y_Coord'] + (df['z_Coord'] / 100)
@@ -59,7 +63,9 @@ unique_stars = []
 for cube_key in df['base64_2D'].unique():
     neighbor_keys = get_neighbor_keys(cube_key)
     neighbor_df = df[df['base64_2D'].isin(neighbor_keys)].copy()
-
+    i += 1
+    if i % 100 == 0:
+        logger.info(f"Processed {i} cubes")
     # Count StarClass/Sub_Class in neighborhood
     neighbor_counts = Counter(
         neighbor_df['StarClass'].astype(str) + "/" + neighbor_df['Sub_Class'].astype(str)
@@ -87,7 +93,7 @@ for cube, star in unique_stars:
 unique_df = pd.DataFrame([star for _, star in unique_stars])
 
 # Save to CSV
-output_path = "C:/Users/luser/OneDrive/Python_script/GH_GAIA/GAIA_Plus_Thined.csv"
+output_path = "C:/Users/luser/OneDrive/Python_script/GAIA/GAIA_Plus_Thined.csv"
 unique_df.to_csv(output_path, index=False)
 
 print(f"\n✅ Saved {len(unique_df)} unique stars to:\n{output_path}")
